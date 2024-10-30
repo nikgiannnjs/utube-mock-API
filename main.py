@@ -79,6 +79,17 @@ class Video(Resource):
         db.session.commit()
         
         return result
+    
+    def delete(self, video_id):
+        result = VideoModel.query.filter_by(id=video_id).first()
+        if not result:
+            abort(404, message="Video does not exist. Cannot delete.")
+        
+        db.session.delete(result)
+        db.session.commit()
+
+        return {"message": "Video deleted successfully"}, 200
+
 
 api.add_resource(Video, "/video/<int:video_id>")
 
